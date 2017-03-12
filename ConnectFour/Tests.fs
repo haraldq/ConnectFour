@@ -10,8 +10,7 @@ module CreateBoard =
         let board = init 
         Assert.Equal(7, cols board)
         Assert.Equal(6, rows board)
-
-
+        
 module AddStone =   
         
     [<Fact>]
@@ -34,7 +33,7 @@ module AddStone =
         Assert.Equal(Player.White, getPieceAt board (0,5) |> Option.get)
 
     [<Fact>]
-    let ``Adds stones to board in same column witin boundaries`` () = 
+    let ``Adds stones to board in same column within boundaries`` () = 
         let board = init 
         let coord = (0,0)
 

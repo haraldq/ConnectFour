@@ -31,6 +31,7 @@ module Library =
     let addStone (board: Board) (player: Player) col = 
         let rec addStone' (board: Board) (player: Player) col acc =
             match getPieceAt board (col, acc)  with
+            | Some(value) when acc = 0 -> ()
             | Some(value) -> addStone' board player col (acc - 1) 
             | None -> board.[col].[acc] <- Some(player)
         addStone' board player col (rows board - 1)
