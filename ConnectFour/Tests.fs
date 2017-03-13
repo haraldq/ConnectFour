@@ -15,27 +15,41 @@ module AddStone =
         
     [<Fact>]
     let ``Adds a stone to board in given column`` () = 
-        let board = init 
-
-        addStone board Player.White 0
+        let board = init |> addStone Player.White 0
         
         Assert.Equal(Player.White, getPieceAt board (0,5) |> Option.get)
 
     [<Fact>]
     let ``Adds additional stone to board in same column`` () = 
-        let board = init 
-        let coord = (0,0)
-
-        addStone board Player.White 0
-        addStone board Player.White 0
+        let board = init |> addStone Player.White 0 |> addStone Player.White 0
         
         Assert.Equal(Player.White, getPieceAt board (0,4) |> Option.get)
         Assert.Equal(Player.White, getPieceAt board (0,5) |> Option.get)
+        Assert.Equal(None, getPieceAt board (1,0))
 
     [<Fact>]
     let ``Adds stones to board in same column within boundaries`` () = 
-        let board = init 
-        let coord = (0,0)
+        init |> 
+        addStone Player.White 0 |> 
+        addStone Player.White 0 |>
+        addStone Player.White 0 |>
+        addStone Player.White 0 |>
+        addStone Player.White 0 |>
+        addStone Player.White 0 |>
+        addStone Player.White 0 |> ignore
+        
+module Winner =
+    
+    [<Fact>]
+    let ``New board has no winner`` () =
+        Assert.Equal(None, winner init)
 
-        for i in 0.. (rows board) + 1 do
-            addStone board Player.White 0
+    [<Fact>]
+    let ``4 in a row is a win`` () =
+        let board = init |> 
+                    addStone Player.White 0 |> 
+                    addStone Player.White 0 |>
+                    addStone Player.White 0 |>
+                    addStone Player.White 0 
+
+        Assert.Equal(Player.White, winner board |> Option.get)
