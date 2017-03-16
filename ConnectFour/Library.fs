@@ -37,10 +37,16 @@ module Library =
             match getPieceAt board (col, acc)  with
             | Some(value) when acc = 0 -> board
             | Some(value) -> addStone' board player col (acc - 1) 
-            | None -> newBoardWithStone board (col, acc) player //board.[col].[acc] <- Some(player)
+            | None -> newBoardWithStone board (col, acc) player
         addStone' board player col (rows board - 1)
         
+    let checkVertical (board: Board) (player: Player) col =
+        [0..rows board - 1] 
+             |> List.map (fun r-> getPieceAt board (col, r))
+             |> List.windowed 4
+             |> List.exists (fun x -> x |> List.forall(fun y -> y = Some(player)))
 
-    let winner (board: Board): Player option =
-        let verticalLine = [0..cols board - 1] |> List.map (fun c-> getPieceAt board (c, 0))
-        None
+    let winner (board: Board) (player: Player) =
+        let checkVerticals = [0..cols board - 1] |> List.exists (fun x -> checkVertical board player x)
+                           
+        checkVerticals

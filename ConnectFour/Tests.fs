@@ -42,7 +42,19 @@ module Winner =
     
     [<Fact>]
     let ``New board has no winner`` () =
-        Assert.Equal(None, winner init)
+        Assert.False(winner init Player.White)
+        Assert.False(winner init Player.Black)
+
+    [<Fact>]
+    let ``4 non-adjacent in same row is not a win`` () =
+        let board = init |> 
+                    addStone Player.White 0 |> 
+                    addStone Player.White 0 |>
+                    addStone Player.Black 0 |>
+                    addStone Player.White 0 |>
+                    addStone Player.White 0 
+
+        Assert.False(winner board Player.White)
 
     [<Fact>]
     let ``4 in a row is a win`` () =
@@ -52,4 +64,14 @@ module Winner =
                     addStone Player.White 0 |>
                     addStone Player.White 0 
 
-        Assert.Equal(Player.White, winner board |> Option.get)
+        Assert.True(winner board Player.White)
+
+    [<Fact>]
+    let ``4 in a row in any column is a win`` () =
+        let board = init |> 
+                    addStone Player.White 2 |> 
+                    addStone Player.White 2 |>
+                    addStone Player.White 2 |>
+                    addStone Player.White 2 
+
+        Assert.True(winner board Player.White)
