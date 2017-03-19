@@ -155,3 +155,19 @@ module Winner =
                     addStone Player.White 4
 
         Assert.True(winner board Player.White)
+
+    [<Fact>]
+    let ``4 in a row diagonally from column 2 row 0 down up is a win`` () =
+        let board = init |>  
+                    addStone Player.White 2 |>
+                    addStone Player.Black 3 |>
+                    addStone Player.White 3 |> 
+                    addStone Player.Black 4 |>
+                    addStone Player.Black 4 |>
+                    addStone Player.White 4 |>
+                    addStone Player.Black 5 |>
+                    addStone Player.Black 5 |>
+                    addStone Player.Black 5 |>
+                    addStone Player.White 5
+
+        Assert.True(winner board Player.White)

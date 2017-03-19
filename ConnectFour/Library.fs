@@ -53,10 +53,10 @@ module Library =
              |> List.exists (fun x -> x |> List.forall(fun y -> y = Some(player)))
 
     let checkDiagDownUp (board: Board) (player: Player) (start: Coordinate) = 
-
         let (startCol, startRow) = start
+        let inBoard ((col, row): Coordinate) =  0 <= col && col < cols board && 0 <= row && row < rows board
 
-        let coords = [0..5] |> List.map (fun x -> (startCol + x, startRow - x))
+        let coords = [0..5] |> List.map (fun x -> (startCol + x, startRow - x)) |> List.filter (fun x -> inBoard x)
 
         let pieces = coords |> List.map (fun x -> getPieceAt board x)
 
@@ -74,6 +74,7 @@ module Library =
                                 |> List.exists (fun x -> checkLine board player (fRow x))
                                 
         let checkDiagonal =  checkDiagDownUp board player (0,5) 
-        let checkDiagonal' =  checkDiagDownUp board player (1,5)  
+        let checkDiagonal' =  checkDiagDownUp board player (1,5) 
+        let checkDiagonal'' =  checkDiagDownUp board player (2,5)  
         
-        checkVerticals || checkHorizontals || checkDiagonal || checkDiagonal' 
+        checkVerticals || checkHorizontals || checkDiagonal || checkDiagonal' || checkDiagonal'' 
