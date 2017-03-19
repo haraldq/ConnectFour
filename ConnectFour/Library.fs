@@ -76,5 +76,10 @@ module Library =
         let checkDiagonal =  checkDiagDownUp board player (0,5) 
         let checkDiagonal' =  checkDiagDownUp board player (1,5) 
         let checkDiagonal'' =  checkDiagDownUp board player (2,5)  
+        let checkDiagonal''' =  checkDiagDownUp board player (3,5)  
+        let checkDiagonal'''' =  checkDiagDownUp board player (0,4)  
+        let checkDiagonal''''' =  checkDiagDownUp board player (0,3)  
         
-        checkVerticals || checkHorizontals || checkDiagonal || checkDiagonal' || checkDiagonal'' 
+
+        checkVerticals || checkHorizontals || checkDiagonal || checkDiagonal' || checkDiagonal'' || checkDiagonal'''
+        || checkDiagonal'''' || checkDiagonal'''''
