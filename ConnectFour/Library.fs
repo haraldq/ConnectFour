@@ -64,6 +64,17 @@ module Library =
         |> List.windowed 4
         |> List.exists (fun x -> x |> List.forall(fun y -> y = Some(player)))
 
+    let checkDiagUpDown (board: Board) (player: Player) (start: Coordinate) = 
+        let (startCol, startRow) = start
+        let inBoard ((col, row): Coordinate) =  0 <= col && col < cols board && 0 <= row && row < rows board
+
+        let coords = [0..5] |> List.map (fun x -> (startCol + x, startRow + x)) |> List.filter (fun x -> inBoard x)
+
+        let pieces = coords |> List.map (fun x -> getPieceAt board x)
+
+        pieces
+        |> List.windowed 4
+        |> List.exists (fun x -> x |> List.forall(fun y -> y = Some(player)))
 
     let winner (board: Board) (player: Player) =
         let fCol x y = (x,y)
@@ -73,13 +84,14 @@ module Library =
         let checkHorizontals = [0..rows board - 1]
                                 |> List.exists (fun x -> checkLine board player (fRow x))
                                 
-        let checkDiagonal =  checkDiagDownUp board player (0,5) 
-        let checkDiagonal' =  checkDiagDownUp board player (1,5) 
-        let checkDiagonal'' =  checkDiagDownUp board player (2,5)  
-        let checkDiagonal''' =  checkDiagDownUp board player (3,5)  
-        let checkDiagonal'''' =  checkDiagDownUp board player (0,4)  
-        let checkDiagonal''''' =  checkDiagDownUp board player (0,3)  
+        let checkDiagonalUD =  checkDiagDownUp board player (0,5) 
+        let checkDiagonalUD' =  checkDiagDownUp board player (1,5) 
+        let checkDiagonalUD'' =  checkDiagDownUp board player (2,5)  
+        let checkDiagonalUD''' =  checkDiagDownUp board player (3,5)  
+        let checkDiagonalUD'''' =  checkDiagDownUp board player (0,4)  
+        let checkDiagonalUD''''' =  checkDiagDownUp board player (0,3)  
+        let checkDiagonalDU =  checkDiagUpDown board player (0,0)  
         
 
-        checkVerticals || checkHorizontals || checkDiagonal || checkDiagonal' || checkDiagonal'' || checkDiagonal'''
-        || checkDiagonal'''' || checkDiagonal'''''
+        checkVerticals || checkHorizontals || checkDiagonalUD || checkDiagonalUD' || checkDiagonalUD'' || checkDiagonalUD'''
+        || checkDiagonalUD'''' || checkDiagonalUD''''' || checkDiagonalDU
