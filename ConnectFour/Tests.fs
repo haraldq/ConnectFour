@@ -46,7 +46,7 @@ module Winner =
         Assert.False(winner init Player.Black)
 
     [<Fact>]
-    let ``4 non-adjacent in same row is not a win`` () =
+    let ``4 non-adjacent vertically in same row is not a win`` () =
         let board = init |> 
                     addStone Player.White 0 |> 
                     addStone Player.White 0 |>
@@ -57,7 +57,7 @@ module Winner =
         Assert.False(winner board Player.White)
 
     [<Fact>]
-    let ``4 in a row is a win`` () =
+    let ``4 in a row vertically is a win`` () =
         let board = init |> 
                     addStone Player.White 0 |> 
                     addStone Player.White 0 |>
@@ -67,11 +67,91 @@ module Winner =
         Assert.True(winner board Player.White)
 
     [<Fact>]
-    let ``4 in a row in any column is a win`` () =
+    let ``4 in a row vertically in any column is a win`` () =
         let board = init |> 
                     addStone Player.White 2 |> 
                     addStone Player.White 2 |>
                     addStone Player.White 2 |>
                     addStone Player.White 2 
+
+        Assert.True(winner board Player.White)
+
+    [<Fact>]
+    let ``4 in a row horizontally is a win`` () =
+        let board = init |> 
+                    addStone Player.White 0 |> 
+                    addStone Player.White 1 |>
+                    addStone Player.White 2 |>
+                    addStone Player.White 3 
+
+        Assert.True(winner board Player.White)
+    
+    [<Fact>]
+    let ``4 non-adjacent horizontally in same row is not a win`` () =
+        let board = init |> 
+                    addStone Player.White 0 |> 
+                    addStone Player.White 1 |>
+                    addStone Player.Black 2 |>
+                    addStone Player.White 3 |>
+                    addStone Player.White 4 
+
+        Assert.False(winner board Player.White)
+
+    [<Fact>]
+    let ``4 in a row diagonally from column 0 row 5 down up is a win`` () =
+        let board = init |> 
+                    addStone Player.White 0 |> 
+                    addStone Player.Black 1 |>
+                    addStone Player.White 1 |>
+                    addStone Player.Black 2 |>
+                    addStone Player.Black 2 |>
+                    addStone Player.White 2 |>
+                    addStone Player.Black 3 |>
+                    addStone Player.Black 3 |>
+                    addStone Player.Black 3 |> 
+                    addStone Player.White 3
+
+        Assert.True(winner board Player.White)
+
+        (*
+            
+            
+        *)
+
+
+    [<Fact>]
+    let ``4 in a row non-adjacent diagonally from column 0 down up is not a win`` () =
+        let board = init |> 
+                    addStone Player.White 0 |> 
+                    addStone Player.Black 1 |>
+                    addStone Player.White 1 |>
+                    addStone Player.Black 2 |>
+                    addStone Player.Black 2 |>
+                    addStone Player.White 2 |>
+                    addStone Player.Black 3 |>
+                    addStone Player.Black 3 |>
+                    addStone Player.Black 3 |> 
+                    addStone Player.Black 3 |> 
+                    addStone Player.Black 4 |>
+                    addStone Player.Black 4 |>
+                    addStone Player.Black 4 |>
+                    addStone Player.Black 4 |>
+                    addStone Player.White 4
+
+        Assert.False(winner board Player.White)
+
+    [<Fact>]
+    let ``4 in a row diagonally from column 1 row 0 down up is a win`` () =
+        let board = init |>  
+                    addStone Player.White 1 |>
+                    addStone Player.Black 2 |>
+                    addStone Player.White 2 |>
+                    addStone Player.Black 3 |>
+                    addStone Player.Black 3 |> 
+                    addStone Player.White 3 |> 
+                    addStone Player.Black 4 |>
+                    addStone Player.Black 4 |>
+                    addStone Player.Black 4 |>
+                    addStone Player.White 4
 
         Assert.True(winner board Player.White)
