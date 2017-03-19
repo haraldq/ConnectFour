@@ -91,7 +91,8 @@ module Library =
         let checkDiagonalUD'''' =  checkDiagDownUp board player (0,4)  
         let checkDiagonalUD''''' =  checkDiagDownUp board player (0,3)  
         let checkDiagonalDU =  checkDiagUpDown board player (0,0)  
+        let checkDiagonalDU' =  checkDiagUpDown board player (1,0)  
         
 
         checkVerticals || checkHorizontals || checkDiagonalUD || checkDiagonalUD' || checkDiagonalUD'' || checkDiagonalUD'''
-        || checkDiagonalUD'''' || checkDiagonalUD''''' || checkDiagonalDU
+        || checkDiagonalUD'''' || checkDiagonalUD''''' || checkDiagonalDU || checkDiagonalDU'
