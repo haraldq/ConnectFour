@@ -195,3 +195,32 @@ module Winner =
                      addNumberOfStonesOnRow 3 4
 
         Assert.True(winner board Player.White)
+    
+    [<Fact>]
+    let ``4 in a row diagonally from column 2 row 0 up down is a win`` () =
+        let board = init |>
+                     addNumberOfStonesOnRow 6 2 |>
+                     addNumberOfStonesOnRow 5 3 |>        
+                     addNumberOfStonesOnRow 4 4 |>
+                     addNumberOfStonesOnRow 3 5
+
+        Assert.True(winner board Player.White)
+    
+    [<Fact>]
+    let ``4 in a row diagonally from column 3 row 0 up down is a win`` () =
+        let board = init |>
+                     addNumberOfStonesOnRow 6 3 |>
+                     addNumberOfStonesOnRow 5 4 |>        
+                     addNumberOfStonesOnRow 4 5 |>
+                     addNumberOfStonesOnRow 3 6
+
+        Assert.True(winner board Player.White)
+   
+    [<Fact>]
+    let ``4 in a row diagonally from column 4 row 0 up down is a not win`` () =
+        let board = init |>
+                     addNumberOfStonesOnRow 6 4 |>
+                     addNumberOfStonesOnRow 5 5 |>        
+                     addNumberOfStonesOnRow 4 6
+
+        Assert.False(winner board Player.White)

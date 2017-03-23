@@ -73,17 +73,16 @@ module Library =
                                 |> List.exists (fun x -> checkLine board player (fRow x))
         
         let fCoordsTraversalUD startCol startRow x = (startCol + x, startRow - x)
-        let checkDiagonalUD =  checkDiag board player (0,5) fCoordsTraversalUD
-        let checkDiagonalUD' =  checkDiag board player (1,5) fCoordsTraversalUD
-        let checkDiagonalUD'' =  checkDiag board player (2,5) fCoordsTraversalUD
-        let checkDiagonalUD''' =  checkDiag board player (3,5) fCoordsTraversalUD
-        let checkDiagonalUD'''' =  checkDiag board player (0,4) fCoordsTraversalUD
-        let checkDiagonalUD''''' =  checkDiag board player (0,3) fCoordsTraversalUD
-
+        let checkDiagonal = [0..5] |> List.map(fun x -> checkDiag board player (x,5) fCoordsTraversalUD) 
+                                   |> List.exists(fun x -> x = true)
+        let checkDiagonal' = [0..5] |> List.map(fun x -> checkDiag board player (0,x) fCoordsTraversalUD) 
+                                   |> List.exists(fun x -> x = true)
+                                   
         let fCoordsTraversalDU startCol startRow x = (startCol + x, startRow + x)
-        let checkDiagonalDU =  checkDiag board player (0,0) fCoordsTraversalDU 
-        let checkDiagonalDU' =  checkDiag board player (1,0)  fCoordsTraversalDU
+        let checkDiagonal'' = [0..5] |> List.map(fun x -> checkDiag board player (x,0) fCoordsTraversalDU) 
+                                   |> List.exists(fun x -> x = true)
+        let checkDiagonal''' = [0..5] |> List.map(fun x -> checkDiag board player (5,x) fCoordsTraversalDU) 
+                                   |> List.exists(fun x -> x = true)
         
 
-        checkVerticals || checkHorizontals || checkDiagonalUD || checkDiagonalUD' || checkDiagonalUD'' || checkDiagonalUD'''
-        || checkDiagonalUD'''' || checkDiagonalUD''''' || checkDiagonalDU || checkDiagonalDU'
+        checkVerticals || checkHorizontals ||  checkDiagonal || checkDiagonal' || checkDiagonal'' || checkDiagonal'''
