@@ -85,6 +85,16 @@ module Winner =
                     addStone Player.White 3 
 
         Assert.True(winner board Player.White)
+
+    [<Fact>]
+    let ``4 in a row horizontally in any row is a win`` () =
+        let board = init |> 
+                    addStone Player.White 1 |> 
+                    addStone Player.White 2 |>
+                    addStone Player.White 3 |>
+                    addStone Player.White 4 
+
+        Assert.True(winner board Player.White)
     
     [<Fact>]
     let ``4 non-adjacent horizontally in same row is not a win`` () =
