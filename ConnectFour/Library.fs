@@ -44,40 +44,31 @@ module Library =
         let (startCol, startRow) = start
         let inBoard ((col, row): Coordinate) =  0 <= col && col < cols board && 0 <= row && row < rows board
 
-        let coords = [0..5] |> List.map (fun x -> fCoordTraversal startCol startRow x) |> List.filter (fun x -> inBoard x)
-
-        let pieces = coords |> List.map (fun x -> getPieceAt board x)
-
-        pieces
-        |> List.windowed 4
-        |> List.exists (fun x -> x |> List.forall(fun y -> y = Some(player)))
+        [0..cols board - 1] |> 
+            List.map (fun x -> fCoordTraversal startCol startRow x) |> 
+            List.filter (fun x -> inBoard x) |>
+            List.map (fun x -> getPieceAt board x)
+            |> List.windowed 4
 
     let winner (board: Board) (player: Player) =
         let nCols = cols board - 1
         let nRows = rows board - 1
 
-        let fCoordsTraversalVert startCol startRow x = (startCol, startRow + x)
-        let checkVerticals = [0..nCols] |> List.map(fun x -> checkLine board player (0,x) fCoordsTraversalVert) 
-                                   |> List.exists(fun x -> x = true)
-        let checkVerticals' = [0..nCols] |> List.map(fun x -> checkLine board player (x,0) fCoordsTraversalVert) 
-                                   |> List.exists(fun x -> x = true)
+        let vertTraverse c r x = (c, r + x)
+        let verticals = [0..nCols] |> List.map(fun x -> checkLine board player (x,0) vertTraverse) 
 
-        let fCoordsTraversalHoriz startCol startRow x = (startCol + x, startRow)
-        let checkHorizontals = [0..nCols] |> List.map(fun x -> checkLine board player (0,x) fCoordsTraversalHoriz) 
-                                   |> List.exists(fun x -> x = true)
-        let checkHorizontals' = [0..nCols] |> List.map(fun x -> checkLine board player (x,0) fCoordsTraversalHoriz) 
-                                   |> List.exists(fun x -> x = true)
-        
-        let fCoordsTraversalUD startCol startRow x = (startCol + x, startRow - x)
-        let checkDiagonal = [0..nCols] |> List.map(fun x -> checkLine board player (x,nCols) fCoordsTraversalUD) 
-                                   |> List.exists(fun x -> x = true)
-        let checkDiagonal' = [0..nCols] |> List.map(fun x -> checkLine board player (0,x) fCoordsTraversalUD) 
-                                   |> List.exists(fun x -> x = true)
+        let horTraverse c r x = (c + x, r)
+        let horizontals = [0..nCols] |> List.map(fun x -> checkLine board player (0,x) horTraverse) 
+
+        let updownDiagTraverse c r x = (c + x, r - x)
+        let diag = [0..nCols] |> List.map(fun x -> checkLine board player (x,nCols) updownDiagTraverse) 
+        let diag' = [0..nCols] |> List.map(fun x -> checkLine board player (0,x) updownDiagTraverse) 
                                    
-        let fCoordsTraversalDU startCol startRow x = (startCol + x, startRow + x)
-        let checkDiagonal'' = [0..nCols] |> List.map(fun x -> checkLine board player (x,0) fCoordsTraversalDU) 
-                                   |> List.exists(fun x -> x = true)
-        let checkDiagonal''' = [0..nCols] |> List.map(fun x -> checkLine board player (nCols,x) fCoordsTraversalDU) 
-                                   |> List.exists(fun x -> x = true)
+        let downupDiagTraverse c r x = (c + x, r + x)
+        let diag'' = [0..nCols] |> List.map(fun x -> checkLine board player (x,0) downupDiagTraverse) 
+        let diag''' = [0..nCols] |> List.map(fun x -> checkLine board player (nCols,x) downupDiagTraverse) 
+
+        let all = List.concat [verticals;horizontals;diag;diag';diag'';diag''']
+
+        all |> List.exists(fun x -> x |> List.exists (fun y -> y |> List.forall(fun z -> z = Some(player))))
         
-        checkVerticals || checkVerticals' || checkHorizontals || checkHorizontals' ||  checkDiagonal || checkDiagonal' || checkDiagonal'' || checkDiagonal'''
