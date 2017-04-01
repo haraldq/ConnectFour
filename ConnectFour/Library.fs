@@ -72,3 +72,24 @@ module Library =
 
         all |> List.exists(fun x -> x |> List.exists (fun y -> y |> List.forall(fun z -> z = Some(player))))
         
+
+module Presentation = 
+    open System
+    open Library
+    let printState (board: Board) = 
+        for i in 0..rows board - 1 do
+            Console.WriteLine()
+            for j in 0..cols board - 1 do
+                match getPieceAt board (j, i) with
+                | None -> Console.Write " + "
+                | Some(Player.White) -> Console.Write " x "
+                | Some(Player.Black) -> Console.Write " o "
+
+        Console.WriteLine()
+        for c in 0..cols board - 1 do
+            Console.Write(" " + c.ToString() + " ")
+                
+
+module Game =
+    open Library
+    let start = init |> addStone Player.White 0 |>  addStone Player.White 0 |>  Presentation.printState
