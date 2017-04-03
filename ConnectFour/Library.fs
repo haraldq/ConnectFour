@@ -71,12 +71,22 @@ module Library =
         let all = List.concat [verticals;horizontals;diag;diag';diag'';diag''']
 
         all |> List.exists(fun x -> x |> List.exists (fun y -> y |> List.forall(fun z -> z = Some(player))))
+
+    let isWin (player: Player) (board: Board) = ((winner board player), board)
         
 
 module Presentation = 
     open System
     open Library
-    let printState (board: Board) = 
+
+    let playerPrint(player: Player) = 
+        if player = Player.White then "white" else "black"
+
+    let printState (player: Player) (board: Board) = 
+        Console.Write("Player ")
+        Console.Write(playerPrint player)
+        Console.WriteLine()
+
         for i in 0..rows board - 1 do
             Console.WriteLine()
             for j in 0..cols board - 1 do
@@ -88,8 +98,32 @@ module Presentation =
         Console.WriteLine()
         for c in 0..cols board - 1 do
             Console.Write(" " + c.ToString() + " ")
+        board
                 
 
 module Game =
+    open System
     open Library
-    let start = init |> addStone Player.White 0 |>  addStone Player.White 0 |>  Presentation.printState
+    open Presentation
+    
+    let next (player: Player) = 
+        match player with
+        | Player.White -> Player.Black
+        | Player.Black -> Player.White
+                             
+        
+    let run (board: Board) (player: Player) row = board |> 
+                                                    addStone player row  |> 
+                                                    printState player |> 
+                                                    isWin player 
+
+                                                  
+    let roll (board: Board) (player: Player) = 
+        let rec game (board: Board) (player: Player) = 
+            Console.Write "\nLägg sten: "
+            match run board player (Console.ReadLine() |> System.Int32.Parse) with
+            | (true, b) -> Console.WriteLine(); Console.WriteLine(playerPrint player + " wins!"); game b player 
+            | (false, b) -> game b (next player) 
+        game board player
+
+
