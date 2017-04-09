@@ -80,7 +80,7 @@ module Presentation =
     open Library
 
     let playerPrint(player: Player) = 
-        if player = Player.White then "white" else "black"
+        if player = Player.White then "white (x)" else "black (o)"
 
     let printState (player: Player) (board: Board) = 
         Console.Write("Player ")
@@ -120,10 +120,13 @@ module Game =
                                                   
     let roll (board: Board) (player: Player) = 
         let rec game (board: Board) (player: Player) = 
-            Console.Write "\nLägg sten: "
+            Console.SetCursorPosition(0, 0)
+            Console.Write "\nAdd stone: "
             match run board player (Console.ReadLine() |> System.Int32.Parse) with
-            | (true, b) -> Console.WriteLine(); Console.WriteLine(playerPrint player + " wins!"); game b player 
+            | (true, b) -> Console.WriteLine(); Console.WriteLine(playerPrint player + " wins!");
             | (false, b) -> game b (next player) 
         game board player
+
+
 
 
